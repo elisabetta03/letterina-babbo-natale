@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Una letterina per Babbo Natale 🎄</title>
+<style>
+  :root{
+    --bg:#efe7da;
+    --paper:#fffaf0;
+    --ink:#3d332f;
+    --red:#9b2f3f;
+    --green:#385b4b;
+    --gold:#b48b4d;
+    --line:#dfcfb7;
+  }
+  *{box-sizing:border-box}
+  html,body{min-height:100%}
+  body{
+    margin:0;
+    font-family: Georgia, "Times New Roman", serif;
+    background:
+      radial-gradient(circle at 15% 15%, rgba(255,255,255,.7), transparent 22rem),
+      linear-gradient(135deg,#e6dccd,#f5eee4 45%,#e7ddcf);
+    color:var(--ink);
+    overflow-x:hidden;
+  }
+
+  .scene{
+    min-height:100vh;
+    display:grid;
+    place-items:center;
+    padding:30px 18px;
+  }
+
+  .envelope-wrap{
+    width:min(560px,92vw);
+    cursor:pointer;
+    user-select:none;
+    transition:.4s ease;
+  }
+  .envelope-wrap:hover{transform:translateY(-4px) rotate(-.3deg)}
+  .hint{
+    text-align:center;
+    color:#6f625a;
+    font-size:.95rem;
+    margin-bottom:16px;
+    letter-spacing:.02em;
+  }
+
+  .envelope{
+    position:relative;
+    height:330px;
+    background:#d8c3a5;
+    border-radius:12px;
+    box-shadow:0 22px 50px rgba(77,56,39,.18);
+    overflow:hidden;
+    border:1px solid #c9b18f;
+  }
+  .envelope:before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      linear-gradient(32deg, transparent 49%, #cbb392 50%, #cbb392 51%, transparent 52%) left/50% 100% no-repeat,
+      linear-gradient(-32deg, transparent 49%, #cbb392 50%, #cbb392 51%, transparent 52%) right/50% 100% no-repeat;
+    opacity:.45;
+  }
+  .flap{
+    position:absolute;
+    inset:0 0 auto 0;
+    height:57%;
+    background:#e2cdb0;
+    clip-path:polygon(0 0,100% 0,50% 100%);
+    z-index:3;
+    transform-origin:top;
+    transition:transform .85s cubic-bezier(.2,.8,.2,1);
+    border-top:1px solid #c6ac88;
+  }
+
+  .seal{
+    position:absolute;
+    z-index:4;
+    left:50%;
+    top:46%;
+    transform:translate(-50%,-50%);
+    width:78px;
+    height:78px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #c9515f, #8f2534 70%);
+    display:grid;
+    place-items:center;
+    color:#f8e5cf;
+    font-size:2rem;
+    box-shadow:0 5px 10px rgba(91,34,43,.25);
+    border:3px solid rgba(120,30,43,.35);
+    transition:.5s ease;
+  }
+  .seal small{
+    position:absolute;
+    bottom:-34px;
+    width:180px;
+    text-align:center;
+    color:#6c5b53;
+    font-size:.82rem;
+    font-family:Georgia,serif;
+    font-weight:normal;
+  }
+
+  .address{
+    position:absolute;
+    z-index:2;
+    left:35px;
+    bottom:30px;
+    font-size:1.05rem;
+    line-height:1.45;
+    color:#57483f;
+    transform:rotate(-1deg);
+  }
+  .stamp{
+    position:absolute;
+    right:30px;
+    top:24px;
+    width:78px;
+    height:95px;
+    border:2px dashed #8f7565;
+    display:grid;
+    place-items:center;
+    text-align:center;
+    font-size:1.8rem;
+    line-height:1.1;
+    color:#6e584c;
+    transform:rotate(4deg);
+    background:rgba(255,255,255,.18);
+  }
+  .stamp span{font-size:.62rem;display:block;margin-top:3px}
+
+  .letter{
+    display:none;
+    width:min(850px,95vw);
+    margin:0 auto;
+    padding:34px 18px 70px;
+  }
+  .paper{
+    position:relative;
+    background:
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 31px,
+        rgba(126,157,190,.18) 32px
+      ),
+      var(--paper);
+    border:1px solid #e1d2ba;
+    box-shadow:0 20px 55px rgba(74,52,36,.14);
+    border-radius:8px;
+    padding:56px 54px 64px 78px;
+    min-height:850px;
+    transform:rotate(-.25deg);
+  }
+  .paper:before{
+    content:"";
+    position:absolute;
+    left:46px;
+    top:0;
+    bottom:0;
+    width:1px;
+    background:rgba(200,92,92,.28);
+  }
+  .paper:after{
+    content:"🎄";
+    position:absolute;
+    right:34px;
+    top:24px;
+    font-size:2.2rem;
+    transform:rotate(5deg);
+  }
+
+  .hand{
+    font-family:"Comic Sans MS","Bradley Hand","Segoe Print","Marker Felt",cursive;
+    font-size:1.18rem;
+    line-height:1.72;
+    letter-spacing:.01em;
+  }
+  .date{
+    text-align:right;
+    color:#7b6b62;
+    margin-bottom:24px;
+    font-size:1rem;
+  }
+  h1{
+    font-family:"Comic Sans MS","Bradley Hand","Segoe Print",cursive;
+    color:var(--red);
+    font-size:clamp(2rem,6vw,3.3rem);
+    margin:0 0 24px;
+    transform:rotate(-1deg);
+  }
+  .intro{margin-bottom:28px}
+  .wish-title{
+    color:var(--green);
+    font-weight:700;
+    font-size:1.35rem;
+    margin:28px 0 14px;
+    transform:rotate(.3deg);
+  }
+  ul{
+    list-style:none;
+    padding:0;
+    margin:0;
+  }
+  li{
+    margin:12px 0 16px;
+    position:relative;
+    padding-left:28px;
+  }
+  li:before{
+    content:"✦";
+    position:absolute;
+    left:0;
+    top:0;
+    color:var(--gold);
+  }
+  a{
+    color:inherit;
+    text-decoration-thickness:1px;
+    text-decoration-style:wavy;
+    text-underline-offset:3px;
+    text-decoration-color:rgba(155,47,63,.55);
+    font-weight:600;
+  }
+  a:hover{color:var(--red)}
+  .sub{
+    color:#7c6e65;
+    font-size:.95rem;
+    font-weight:normal;
+  }
+  .ending{
+    margin-top:34px;
+  }
+  .signature{
+    margin-top:28px;
+    font-size:1.35rem;
+    color:var(--red);
+    transform:rotate(-1deg);
+  }
+  .ps{
+    margin-top:24px;
+    color:#72665f;
+    font-size:.98rem;
+  }
+
+  .back{
+    display:inline-block;
+    margin:24px 0 0;
+    border:0;
+    background:var(--green);
+    color:white;
+    font:inherit;
+    padding:10px 16px;
+    border-radius:999px;
+    cursor:pointer;
+    box-shadow:0 5px 14px rgba(56,91,75,.18);
+  }
+
+  .snow{position:fixed;inset:0;pointer-events:none;z-index:-1;overflow:hidden}
+  .snow span{
+    position:absolute;top:-30px;color:white;text-shadow:0 0 3px #b7a99c;
+    animation:fall linear infinite;opacity:.6
+  }
+  @keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
+
+  body.open .envelope-wrap{opacity:0;transform:translateY(20px) scale(.96);pointer-events:none}
+  body.open .flap{transform:rotateX(180deg)}
+  body.open .seal{opacity:0;transform:translate(-50%,-50%) scale(.7)}
+  body.open .scene{display:none}
+  body.open .letter{display:block;animation:appear .7s ease both}
+  @keyframes appear{
+    from{opacity:0;transform:translateY(24px)}
+    to{opacity:1;transform:none}
+  }
+
+  @media(max-width:640px){
+    .envelope{height:270px}
+    .seal{width:68px;height:68px}
+    .address{left:22px;bottom:22px;font-size:.93rem}
+    .stamp{right:20px;top:18px;width:66px;height:82px}
+    .paper{padding:48px 24px 52px 48px}
+    .paper:before{left:32px}
+    .hand{font-size:1.05rem}
+  }
+</style>
+</head>
+
+<body>
+<div class="snow" id="snow"></div>
+
+<section class="scene">
+  <div>
+    <div class="hint">Clicca sulla busta per aprire la letterina ✨</div>
+    <div class="envelope-wrap" id="openLetter" role="button" tabindex="0" aria-label="Apri la letterina">
+      <div class="envelope">
+        <div class="flap"></div>
+        <div class="seal">🎅<small>sigillo ufficiale del Polo Nord</small></div>
+
+        <div class="address">
+          Per: <b>Mamma</b><br>
+          Consegna speciale di Natale<br>
+          Priorità: altissima 🎁
+        </div>
+
+        <div class="stamp">
+          🎄
+          <span>POLO NORD<br>EXPRESS</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main class="letter" id="letter">
+  <article class="paper hand">
+    <div class="date">Natale 2026 ✨</div>
+
+    <h1>Carissimo Babbo Natale,</h1>
+
+    <p class="intro">
+      quest'anno sono stata bravissima... o almeno abbastanza da meritarmi una letterina ufficiale.
+      Siccome immagino che tu abbia moltissimo da fare, ti lascio qui qualche idea, così gli elfi
+      non devono impazzire a indovinare. Ovviamente non voglio tutto: questa è una lista dei desideri,
+      non un ordine al magazzino del Polo Nord. ❤️
+    </p>
+
+    <div class="wish-title">Mi piacerebbe tanto...</div>
+
+    <ul>
+      <li>
+        <a href="https://www.zalando.it/carhartt-wip-hooded-american-script-felpa-con-zip-black-c1422s0it-q11.html" target="_blank">
+          una Carhartt WIP Hooded American Script nera
+        </a>
+        <span class="sub"> — la felpa con la zip.</span>
+      </li>
+
+      <li>
+        <a href="https://www.zalando.it/birkenstock-boston-ciabattine-mocca-bi115g01u-o11.html" target="_blank">
+          le Birkenstock Boston color mocca
+        </a>
+        <span class="sub"> — perché la comodità ormai è un valore fondamentale.</span>
+      </li>
+
+      <li>
+        <a href="https://www.zalando.it/carhartt-wip-chicago-giacca-da-mezza-stagione-black-light-stone-washed-c1422t0in-q11.html" target="_blank">
+          una Carhartt WIP Chicago black light stone washed
+        </a>
+        <span class="sub"> — giacca da mezza stagione, bellissima.</span>
+      </li>
+
+      <li>
+        <a href="https://www.instant-gaming.com/it/22985-comprare-fable-pc-xbox-series-x-s-microsoft-store/?itm_source=home_page&itm_medium=product_last_seen&utm_source=website&utm_medium=share&utm_campaign=product_share" target="_blank">
+          Fable
+        </a>
+        <span class="sub"> — sì, anche i videogiochi rientrano nei beni essenziali.</span>
+      </li>
+
+      <li>
+        un <b>Dior Sauvage</b>.
+      </li>
+
+      <li>
+        un piccolo set <b>Medicube</b> con crema jelly al collagene, siero e stick al collagene.
+      </li>
+
+      <li>
+        <a href="https://www.zalando.it/converse-star-player-76-unisex-sneakers-basse-blackvintage-white-co415o0jo-q11.html" target="_blank">
+          le Converse Star Player 76 nere e vintage white
+        </a>
+        <span class="sub"> — quelle con la stella, proprio loro.</span>
+      </li>
+
+      <li>
+        <a href="https://www.zalando.it/ugg-tazz-ii-unisex-zoccoli-dusted-cocoa-ug111d05j-o11.html" target="_blank">
+          le UGG Tazz II color Dusted Cocoa
+        </a>
+        <span class="sub"> — perché a Natale anche i piedi meritano qualcosa.</span>
+      </li>
+
+      <li>
+        <a href="https://www.zalando.it/onitsuka-tiger-sneakers-basse-charcoal-birch-ti315p002-c11.html" target="_blank">
+          le Onitsuka Tiger Tokuten charcoal birch
+        </a>.
+      </li>
+
+      <li>
+        una <b>Carhartt Detroit Jacket vinaccia</b>.
+      </li>
+
+      <li>
+        una <b>cintura Diesel autentica</b>,
+        <span class="sub">ma abbastanza lunga: per favore, non 105 cm 😭</span>
+      </li>
+
+      <li>
+        dell'<b>olio per capelli Moroccanoil</b>.
+      </li>
+
+      <li>
+        e infine un bellissimo <b>maglione da nonno</b>:
+        <span class="sub">più sembra uscito dall'armadio di un signore elegantissimo del 1987, meglio è.</span>
+      </li>
+    </ul>
+
+    <p class="ending">
+      Prometto che apprezzerò qualunque sorpresa. Questa letterina serve soprattutto a dare qualche
+      idea al reparto acquisti del Polo Nord... o a chiunque, per puro caso, si occupi dei regali in casa. 🎁
+    </p>
+
+    <p class="signature">
+      Con tanto amore,<br>
+      la tua bambina 🎄❤️
+    </p>
+
+    <p class="ps">
+      P.S. Se questa lettera è arrivata direttamente alla Mamma invece che a Babbo Natale,
+      probabilmente al Polo Nord hanno finalmente esternalizzato la logistica.
+    </p>
+
+    <button class="back" id="closeLetter">← Richiudi la letterina</button>
+  </article>
+</main>
+
+<script>
+  const openBtn = document.getElementById('openLetter');
+  const closeBtn = document.getElementById('closeLetter');
+
+  function openLetter(){
+    document.body.classList.add('open');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function closeLetter(){
+    document.body.classList.remove('open');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  openBtn.addEventListener('click', openLetter);
+  openBtn.addEventListener('keydown', e => {
+    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openLetter(); }
+  });
+  closeBtn.addEventListener('click', closeLetter);
+
+  const snow = document.getElementById('snow');
+  for(let i=0;i<30;i++){
+    const s=document.createElement('span');
+    s.textContent=Math.random()>.5?'❄':'•';
+    s.style.left=Math.random()*100+'vw';
+    s.style.animationDuration=(8+Math.random()*12)+'s';
+    s.style.animationDelay=(-Math.random()*12)+'s';
+    s.style.fontSize=(8+Math.random()*14)+'px';
+    snow.appendChild(s);
+  }
+</script>
+</body>
+</html>
